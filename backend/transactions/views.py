@@ -28,7 +28,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()  # Declaração explícita
     serializer_class = TransactionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     # def get_queryset(self):
     #     return Transaction.objects.filter(user=self.request.user)
