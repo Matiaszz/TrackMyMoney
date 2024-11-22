@@ -1,39 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import {
+  Transaction,
+  transactionTypeNames,
+  useFetchTransactions,
+} from "../utils/fetch";
 
-interface Transaction {
-  id: number;
-  title: string;
-  transaction_type: string;
-  amount: string;
-  date: string;
-}
-const transactionTypeNames: { [key: string]: string } = {
-  HE: "Saúde",
-  EE: "Gastos Essenciais",
-  IN: "Investimentos",
-  LE: "Lazer",
-  ED: "Educação",
-  OT: "Outros",
-};
 const TransactionsPage = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/transactions/")
-      .then((response) => response.json())
-      .then((data) => {
-        setTransactions(data.results);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching transactions:", error);
-        setError("Falha ao carregar transações.");
-        setLoading(false);
-      });
-  }, []);
+  const { transactions, loading, error } = useFetchTransactions();
 
   return (
     <div className="gap-6">
@@ -45,7 +18,7 @@ const TransactionsPage = () => {
       ) : (
         <ul>
           {transactions.length > 0 ? (
-            transactions.map((transaction) => (
+            transactions.map((transaction: Transaction) => (
               <li key={transaction.id}>
                 <strong>{transaction.title}</strong> - {transaction.amount} (
                 {transactionTypeNames[transaction.transaction_type]}) -{" "}
