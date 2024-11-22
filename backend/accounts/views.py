@@ -10,6 +10,11 @@ from rest_framework import status
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -25,11 +30,11 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
-            refresh = RefreshToken.for_user(user)
+            refresh = RefreshToken.for_user(user)  # type: ignore
             return Response({
                 'user': UserSerializer(user).data,
                 'refresh': str(refresh),
-                'access': str(refresh.access_token),
+                'access': str(refresh.access_token),  # type: ignore
             })
         return Response(serializer.errors, status=400)
 
@@ -44,3 +49,12 @@ class UpdateUserView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)

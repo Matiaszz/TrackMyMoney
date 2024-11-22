@@ -57,6 +57,9 @@ export default function RootLayout({
             <a href="/transactions" className="hover:underline">
               Transações
             </a>
+            <a href="/account" className="hover:underline">
+              Conta
+            </a>
           </nav>
         </header>
         {children}

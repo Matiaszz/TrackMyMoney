@@ -19,3 +19,12 @@ export const updateUser = async (userData) => {
   });
   return response.data;
 };
+
+export const getUserInfo = async (token) => {
+  const response = await api.get("accounts/profile/", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
